@@ -13,7 +13,9 @@ def main():
     clock = pygame.time.Clock() #Used to limit screen refresh rate to desired frame rate (fr)
     dt = 0
     fr = 60 #60 Hz framerate
+    remaining_lives = PLAYER_LIVES
     print("Starting Asteroids!")
+    print(f"Remaining lives: {remaining_lives}")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #Set screen dimensions
@@ -27,20 +29,27 @@ def main():
     Asteroid.containers = (asteroids, updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
     AsteroidField.containers = updatable
-
     #Initializing objects
     player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2) #Instantiate player object
     field = AsteroidField()
-
     while True:
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
         updatable.update(dt)
+        #If player collides with asteroid, kill all objects and respawn
         for asteroid in asteroids:
             if asteroid.check_collision(player) == True:
-                print("Game over!")
-                sys.exit()
+                if remaining_lives > 1:
+                    remaining_lives -= 1
+                    print(f"Ship hit! Remaining lives: {remaining_lives}")
+                    for asteroid in asteroids:
+                        asteroid.kill()
+                    player.kill()
+                    player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+                else:
+                    print("Game over!")
+                    sys.exit()
         for asteroid in asteroids:
             for shot in shots:
                 if asteroid.check_collision(shot) == True:
