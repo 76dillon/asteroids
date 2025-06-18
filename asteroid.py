@@ -26,5 +26,16 @@ class Asteroid(CircleShape):
         new_asteroid.velocity = vel_vec1*1.2
         new_asteroid = Asteroid(self.position.x, self.position.y, new_radius)
         new_asteroid.velocity = vel_vec2*1.2
+    
+    def add_pts(self):
+        if self.radius == ASTEROID_MIN_RADIUS:
+            num_pts = NUM_PTS_SMALL
+        elif self.radius == ASTEROID_MIN_RADIUS*2:
+            num_pts = NUM_PTS_MED
+        else:
+            num_pts = NUM_PTS_BIG
+        return num_pts
+
+
 
         

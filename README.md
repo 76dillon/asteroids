@@ -2,5 +2,6 @@
 
 Asteroids Python Arcade Game
 
-Release Notes[v1.1]:
+Release Notes[v1.2]
 -Added multiple lives and respawns
+-Added scoring system

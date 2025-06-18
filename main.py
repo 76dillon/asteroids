@@ -13,11 +13,11 @@ def main():
     clock = pygame.time.Clock() #Used to limit screen refresh rate to desired frame rate (fr)
     dt = 0
     fr = 60 #60 Hz framerate
+    total_pts = 0
     remaining_lives = PLAYER_LIVES
     print("Starting Asteroids!")
     print(f"Remaining lives: {remaining_lives}")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
+    print(f"Total Score: {total_pts}")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #Set screen dimensions
     #Create two groups. First are objects that can be updated, second is all objects that can be drawn
     updatable = pygame.sprite.Group()
@@ -50,9 +50,13 @@ def main():
                 else:
                     print("Game over!")
                     sys.exit()
+        #If shot hit asteroid, split asteroid and add points to player score
         for asteroid in asteroids:
             for shot in shots:
                 if asteroid.check_collision(shot) == True:
+                    num_pts = asteroid.add_pts()
+                    total_pts += num_pts
+                    print(f"Total Score: {total_pts}")
                     asteroid.split()
                     shot.kill()
         screen.fill((0, 0, 0), rect=None, special_flags=0)
